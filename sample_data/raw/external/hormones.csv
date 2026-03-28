@@ -1,0 +1,3 @@
+subject_id,hormone,value,unit,visit
+1001,ESTRADIOL,45.2,pg/mL,SCREENING
+1002,TESTOSTERONE,320,ng/dL,WEEK4

@@ -1,0 +1,52 @@
+1    /**********************************************************************
+2    * Program : ae.sas
+3    * Domain  : AE — Adverse Events
+4    ***********************************************************************/
+5
+6    options compress=yes;
+7
+8    libname raw  "/data/raw/edc";
+NOTE: Libname RAW assigned to /data/raw/edc.
+9    libname sdtm "/data/sdtm";
+NOTE: Libname SDTM assigned to /data/sdtm.
+10
+11   data work.ae_input;
+12     set raw.ae;
+NOTE: There were 2847 observations read from the data set RAW.AE.
+13     where aeterm ne "";
+14     if aestdtc = "" then aestdtc = "UNKNOWN";
+15   run;
+NOTE: The data set WORK.AE_INPUT has 2803 observations and 24 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.14 seconds
+      cpu time            0.11 seconds
+
+16
+17   proc sort data = raw.dm (keep = usubjid rfstdtc siteid) out = work.dm_ref;
+NOTE: There were 312 observations read from the data set RAW.DM.
+18     by usubjid;
+19   run;
+NOTE: The data set WORK.DM_REF has 312 observations and 3 variables.
+
+20
+21   data work.ae_mapped;
+22     merge work.ae_input (in=a)
+23           work.dm_ref   (in=b);
+24     by usubjid;
+25     if a;
+26
+27     STUDYID  = "STUDY001";
+28     DOMAIN   = "AE";
+29     AESEQ    = _N_;
+NOTE: The data set WORK.AE_MAPPED has 2803 observations and 31 variables.
+
+30
+31   data sdtm.ae;
+32     retain STUDYID DOMAIN USUBJID AESEQ AETERM AEDECOD;
+33     set work.ae_mapped;
+NOTE: The data set SDTM.AE has 2803 observations and 15 variables.
+
+NOTE: PROCEDURE PRINT used (Total process time):
+      real time           0.03 seconds
+
+NOTE: %PUT: AE domain complete. N=2803

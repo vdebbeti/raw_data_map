@@ -1,0 +1,12 @@
+name: raw_data_map
+title: raw_data_map
+username: clinstandards
+account: clinstandards
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 17008118
+bundleId: 11774706
+url: https://clinstandards.shinyapps.io/raw_data_map/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
